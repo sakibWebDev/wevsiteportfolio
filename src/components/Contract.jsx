@@ -1,6 +1,6 @@
 import { motion as Motion } from "framer-motion";
 import emailjs from "@emailjs/browser";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -14,7 +14,7 @@ const staggerContainer = {
   },
 };
 
-const Contract = () => {
+const Contact = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -30,11 +30,9 @@ const Contract = () => {
     message: "",
   });
 
-  const formRef = useRef();
-
   useEffect(() => {
     setIsLoaded(true);
-    emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
+    emailjs.init("EgRu5EDZ5mty3T2an"); // Your public key
   }, []);
 
   const handleInputChange = (e) => {
@@ -45,17 +43,12 @@ const Contract = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setFormStatus({
-      submitting: true,
-      success: false,
-      error: false,
-      message: "",
-    });
+    setFormStatus({ submitting: true, success: false, error: false, message: "" });
 
     try {
       await emailjs.send(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        "service_74md3pp", // Service ID as string
+        "template_ghfy459", // Template ID as string
         {
           name: formData.name,
           email: formData.email,
@@ -92,21 +85,12 @@ const Contract = () => {
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
     >
-      <Motion.h2
-        variants={fadeInUp}
-        initial="initial"
-        animate="animate"
-        viewport={{ once: true }}
-      >
+      <Motion.h2 variants={fadeInUp} initial="initial" animate="animate" viewport={{ once: true }}>
         Get in Touch
       </Motion.h2>
 
       <Motion.div className="contact-content" variants={staggerContainer}>
-        <Motion.form
-          ref={formRef}
-          className="contact-form"
-          onSubmit={handleSubmit}
-        >
+        <Motion.form className="contact-form" onSubmit={handleSubmit}>
           <Motion.input
             type="text"
             name="name"
@@ -154,11 +138,7 @@ const Contract = () => {
           </Motion.button>
 
           {formStatus.message && (
-            <Motion.div
-              className={`form-status ${
-                formStatus.success ? "success" : "error"
-              }`}
-            >
+            <Motion.div className={`form-status ${formStatus.success ? "success" : "error"}`}>
               {formStatus.message}
             </Motion.div>
           )}
@@ -168,4 +148,4 @@ const Contract = () => {
   );
 };
 
-export default Contract;
+export default Contact;
